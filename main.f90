@@ -4,7 +4,7 @@ program main
     implicit none
     
     type(c_ptr) :: ren, win
-    type(sdl_event) :: evt
+    type(c_ptr) :: evt
 
     integer :: x
     logical :: f
@@ -18,7 +18,7 @@ program main
     x = sdl_create_window_and_renderer(640, 480, 0, win, ren)
 
     do while (f)
-        if (sdl_wait_event(evt) > 0) then
+        if (sdl_poll_event(evt) > 0) then
             print *, "A"
         end if
     end do

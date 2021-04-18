@@ -64,9 +64,9 @@ module sdl
         end function
 
         function sdl_poll_event(event) bind(c, name='SDL_PollEvent')
-            import :: c_int, sdl_event
+            import :: c_int, c_ptr
 
-            type(sdl_event), intent(inout) :: event
+            type(c_ptr), intent(in), value :: event
             integer(c_int) :: sdl_poll_event
         end function
 
