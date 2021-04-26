@@ -1,19 +1,10 @@
 program game
     use kiwi
+    use map
     implicit none
-
-    integer, parameter :: KEYDOWN_EVENT = int(z'300')
-    integer, parameter :: KEYUP_EVENT = int(z'301')
-    integer, parameter :: QUIT_EVENT = int(z'100')
-
-    integer, parameter :: KEY_RIGHT = int(z'4000004f')
 
     integer, parameter :: WIN_WIDTH = 256
     integer, parameter :: WIN_HEIGHT = 224
-
-    integer, dimension(WIN_WIDTH / 8, WIN_HEIGHT / 8) :: map
-
-    map(:, :) = 0
     
     if (kiwi_init(WIN_WIDTH, WIN_HEIGHT, 2) .ne. 0) then
         stop
@@ -21,17 +12,25 @@ program game
 
     call kiwi_load("tileset.bmp" // c_null_char)
 
+    call map_init()
+
     main: do while (.true.)
         call kiwi_begin_frame()
 
         event: do while (kiwi_poll_event() > 0)
             select case (kiwi_event_type())
-                case (KEYDOWN_EVENT)
+                case (EVENT_KEYUP)
                     select case (kiwi_event_key())
                         case (KEY_RIGHT)
                             print *, "Right"
+                        case (KEY_LEFT)
+                            print *, "Left"
+                        case (KEY_DOWN)
+                            print *, "Down"
+                        case (KEY_UP)
+                            print *, "Up"
                     end select
-                case (QUIT_EVENT)
+                case (EVENT_QUIT)
                     exit main
             end select
         end do event
@@ -47,9 +46,13 @@ end program game
 
 subroutine draw_tiles()
     use kiwi
+    use map
 
-    integer :: i
-    do i = 0, 39
-        call kiwi_copy(i, i * 8, 0)
+    integer :: i, j
+
+    do j = 1, MAP_HEIGHT
+        do i = 1, MAP_WIDTH
+            call kiwi_copy(tiles(i, j), i * TILE_SIZE, j * TILE_SIZE)
+        end do
     end do
 end subroutine

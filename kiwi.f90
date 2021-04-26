@@ -2,6 +2,17 @@ module kiwi
     use, intrinsic :: iso_c_binding
     implicit none
     
+    integer, parameter :: TILE_SIZE = 8
+
+    integer, parameter :: EVENT_KEYDOWN = int(z'300')
+    integer, parameter :: EVENT_KEYUP = int(z'301')
+    integer, parameter :: EVENT_QUIT = int(z'100')
+
+    integer, parameter :: KEY_RIGHT = int(z'4000004f')
+    integer, parameter :: KEY_LEFT = int(z'40000050')
+    integer, parameter :: KEY_DOWN = int(z'40000051')
+    integer, parameter :: KEY_UP = int(z'40000052')
+
     interface
         function kiwi_init(width, height, scale) bind(c)
             import :: c_int
@@ -21,10 +32,10 @@ module kiwi
             character(kind=c_char), intent(in) :: filename
         end subroutine
 
-        subroutine kiwi_copy(index, x, y) bind(c)
+        subroutine kiwi_copy(tile, x, y) bind(c)
             import :: c_int
 
-            integer(c_int), intent(in), value :: index
+            integer(c_int), intent(in), value :: tile
             integer(c_int), intent(in), value :: x
             integer(c_int), intent(in), value :: y
         end subroutine

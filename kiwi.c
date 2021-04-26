@@ -77,10 +77,10 @@ void kiwi_load(const char *filename)
     SDL_FreeSurface(surface);
 }
 
-void kiwi_copy(int index, int x, int y)
+void kiwi_copy(int tile, int x, int y)
 {
-    src.x = tile_col[index];
-    src.y = tile_row[index];
+    src.x = tile_col[tile];
+    src.y = tile_row[tile];
 
     dst.x = x;
     dst.y = y;
