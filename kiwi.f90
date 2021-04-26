@@ -3,17 +3,30 @@ module kiwi
     implicit none
     
     interface
-        function kiwi_init(x, y, width, height) bind(c)
+        function kiwi_init(width, height, scale) bind(c)
             import :: c_int
 
-            integer(c_int), intent(in), value :: x
-            integer(c_int), intent(in), value :: y
             integer(c_int), intent(in), value :: width
             integer(c_int), intent(in), value :: height
+            integer(c_int), intent(in), value :: scale
             integer(c_int) :: kiwi_init
         end function
 
         subroutine kiwi_quit() bind(c)
+        end subroutine
+
+        subroutine kiwi_load(filename) bind(c)
+            import :: c_char
+
+            character(kind=c_char), intent(in) :: filename
+        end subroutine
+
+        subroutine kiwi_copy(index, x, y) bind(c)
+            import :: c_int
+
+            integer(c_int), intent(in), value :: index
+            integer(c_int), intent(in), value :: x
+            integer(c_int), intent(in), value :: y
         end subroutine
 
         subroutine kiwi_begin_frame() bind(c)
@@ -26,6 +39,12 @@ module kiwi
             import :: c_int
 
             integer(c_int) :: kiwi_poll_event
+        end function
+
+        function kiwi_event_key() bind(c)
+            import :: c_int
+
+            integer(c_int) :: kiwi_event_key
         end function
 
         function kiwi_event_type() bind(c)
